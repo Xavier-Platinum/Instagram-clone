@@ -4,7 +4,8 @@ class PostsController < ApplicationController
     end
 
     def create
-        @post = Post.new(params[:object])
+        @post = Post.new(post_params)
+        @post.account_id  = current_account.id if account_signed_in?
         if @post.save
             flash[:success] = "Post successfully created"
             redirect_to dashboard_url
@@ -20,7 +21,7 @@ class PostsController < ApplicationController
 
     private 
 
-    def post_para
+    def post_params
         # params.require(:post).permit(:image, :first_name, :last_name, {avatars: []})
         params.require(:post).permit(:image, :image_cache)
     end
